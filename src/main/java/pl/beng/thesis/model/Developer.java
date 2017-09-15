@@ -35,7 +35,7 @@ public class Developer extends Employee {
             inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id",
                     nullable = false, updatable = false)
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Project> projects = new HashSet<>();
 
 
     public Set<Skill> getSkills() {

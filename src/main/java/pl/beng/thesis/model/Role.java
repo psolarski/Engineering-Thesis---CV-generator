@@ -13,8 +13,7 @@ import java.util.Set;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "name", nullable = false, updatable = false)
+    @Column(name = "name")
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY, targetEntity = Employee.class, mappedBy = "roles")

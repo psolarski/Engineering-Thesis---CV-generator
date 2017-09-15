@@ -11,7 +11,7 @@ public class Education {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "project_id", nullable = false, updatable = false)
+    @Column(name = "education_id", nullable = false, updatable = false)
     private Integer id;
 
     @Basic(optional = false)
