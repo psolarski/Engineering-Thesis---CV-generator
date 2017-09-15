@@ -27,6 +27,17 @@ public class Developer extends Employee {
     @OneToMany(mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     private Set<Education> educations = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Project.class)
+    @JoinTable(
+            name = "developers_projects",
+            joinColumns = @JoinColumn(name = "developer_id", referencedColumnName = "developer_id",
+                    nullable = false, updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id",
+                    nullable = false, updatable = false)
+    )
+    private Set<Role> roles = new HashSet<>();
+
+
     public Set<Skill> getSkills() {
         return skills;
     }

@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Project implements Serializable {
@@ -24,6 +26,9 @@ public class Project implements Serializable {
 
     @Column(nullable = false)
     private LocalDate endDate;
+
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Developer.class, mappedBy = "projects")
+    private Set<Developer> developers = new HashSet<>();
 
     @Version
     @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
@@ -60,6 +65,14 @@ public class Project implements Serializable {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public Set<Developer> getDevelopers() {
+        return developers;
+    }
+
+    public void setDevelopers(Set<Developer> developers) {
+        this.developers = developers;
     }
 
     @Override
