@@ -12,7 +12,7 @@ public class Education {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "education_id", nullable = false, updatable = false)
-    private Integer id;
+    private Long id;
 
     @Basic(optional = false)
     @Column(nullable = false)

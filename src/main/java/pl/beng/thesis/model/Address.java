@@ -13,7 +13,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "address_id", nullable = false, updatable = false)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     @Size(min = 3, max = 50)
@@ -63,6 +63,10 @@ public class Address {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override

@@ -25,7 +25,7 @@ public abstract class Employee implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "employee_id", nullable = false, updatable = false)
-    private Integer id;
+    private Long id;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -133,7 +133,7 @@ public abstract class Employee implements UserDetails {
         return name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

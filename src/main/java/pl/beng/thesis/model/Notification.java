@@ -13,7 +13,7 @@ public class Notification implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "notification_id", nullable = false, updatable = false)
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     @Size(min = 5, max = 50)
