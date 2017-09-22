@@ -11,8 +11,14 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(name = "developer_id", referencedColumnName = "employee_id")
 public class Developer extends Employee {
 
-    public Developer(String name, String surname, String password, String email, LocalDate creationDate) {
-        super(name, surname, password, email, creationDate);
+    public Developer(String name,
+                     String surname,
+                     String username,
+                     String password,
+                     String email,
+                     LocalDate creationDate) {
+
+        super(name, surname, username, password, email, creationDate);
     }
 
     public Developer() {

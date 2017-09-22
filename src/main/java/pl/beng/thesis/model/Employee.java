@@ -1,6 +1,7 @@
 package pl.beng.thesis.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "employee")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonDeserialize(as = Developer.class)
 public abstract class Employee implements UserDetails {
 
     private static final long serialVersionUID = 1L;
@@ -36,6 +38,10 @@ public abstract class Employee implements UserDetails {
     @Column(nullable = false)
     @Size(min = 2, max = 40)
     private String surname;
+
+    @Basic(optional = false)
+    @Column(nullable = false, unique = true)
+    private String username;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -76,10 +82,12 @@ public abstract class Employee implements UserDetails {
     public Employee() {
     }
 
-    public Employee(String name, String surname, String password, String email, LocalDate creationDate) {
+    public Employee(String name, String surname, String username,
+                    String password, String email, LocalDate creationDate) {
 
         this.name = name;
         this.surname = surname;
+        this.username = username;
         this.password = password;
         this.email = email;
         this.creationDate = creationDate;
@@ -130,7 +138,7 @@ public abstract class Employee implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return username;
     }
 
     public Long getId() {
@@ -147,6 +155,10 @@ public abstract class Employee implements UserDetails {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {

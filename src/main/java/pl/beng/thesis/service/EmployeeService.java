@@ -27,4 +27,14 @@ public class EmployeeService {
     public List<Employee> findAll() {
         return employeeRepository.findAll();
     }
+
+    @Transactional
+    public void updateEmployee(Employee updatedEmployee) {
+        employeeRepository.saveAndFlush(updatedEmployee);
+    }
+
+    @Transactional
+    public Employee findByEmail(String email) {
+        return employeeRepository.findByEmail(email);
+    }
 }
