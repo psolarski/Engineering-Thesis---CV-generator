@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+     <!-- Title !-->
+    <title>Developer CV</title>
+
+    <!-- Licence info
+    This template originally came from http://elemisfreebies.com/ Has been modify for purpose of this project !-->
+
+    <!-- Including css style !-->
+    <style th:replace="templateCSS.html :: template">
+
+    </style>
+</head>
+<body>
+    <!-- Begin Document -->
+    <div id="wrapper">
+        <div class="wrapper-top"></div>
+        <div class="wrapper-mid">
+            <!-- Begin Paper -->
+            <div id="paper">
+                <div class="paper-top"></div>
+                <div id="paper-mid">
+                    <div class="entry">
+                        <!-- Begin Personal Information -->
+                        <div class="self">
+                            <h1 class="name">[[${developerName}]] <br/><br/> [(${developerSurname})]</h1>
+                        </div>
+                        <div class="self self-margin">
+                            <ul>
+                                <li class="glyphicon glyphicon-map-marker left-part-icons">[(${developerAddress})]</li>
+                                <li class="glyphicon glyphicon-envelope left-part-icons">[(${developerEmail})]</li>
+                                <li class="glyphicon glyphicon-earphone left-part-icons">[(${developerPhone})]</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Begin 2nd Row -->
+                    <div class="entry">
+                        <h2>EDUCATION</h2>
+                        <div class="content" th:each="education : ${developerEducation}">
+                            <h3 th:text="${#temporals.monthNameShort(education.getStartDate())} + ' ' + ${#temporals.year(education.getStartDate())}
+                                + '-' +
+                                ${#temporals.monthNameShort(education.getEndDate())} + ' ' + ${#temporals.year(education.getEndDate())}">
+                             2014 - 2015</h3>
+                            <p th:text="${education.getUniversity()}">Academy of Art University, London <br/></p>
+                            <p th:text="'Faculty:'+ ${education.getFaculty()}">Master in Communication Design</p>
+                            <p th:text="'Specialization:' + ${education.getSpecialization()}">Software Engineering and Data Analysis</p>
+                        </div>
+                    </div>
+                    <!-- End 2nd Row -->
+                    <!-- Begin 3rd Row -->
+                    <div class="entry">
+                        <h2>EXPERIENCE</h2>
+                        <div class="content" th:each="project : ${developerProjects}">
+                            <h3 th:text="${#temporals.monthNameShort(project.getStartDate())} + ' ' + ${#temporals.year(project.getStartDate())}
+                                 + '-' +
+                                 ${#temporals.monthNameShort(project.getEndDate())} + ' ' + ${#temporals.year(project.getEndDate())}">
+                            May 2009 - Feb 2010</h3>
+                            <p th:text="${project.getCompany()} + ', ' + ${project.getCity()}">Agency Creative, London <br />
+                                <em th:text="${project.getPosition()}">Junior Web Designer</em></p>
+                            <ul class="info">
+                                <li th:text="${project.getDescription()}">Vestibulum eu ante massa, sed rhoncus velit.</li>
+                            </ul>
+                        </div>
+                        <!--<div class="content">-->
+                            <!--<h3>Jun 2007 - May 2009</h3>-->
+                            <!--<p>Junior Web Designer <br />-->
+                                <!--<em>Bachelor of Science in Graphic Design</em></p>-->
+                            <!--<ul class="info">-->
+                                <!--<li>Sed fermentum sollicitudin interdum. Etiam imperdiet sapien in dolor rhoncus a semper tortor posuere. </li>-->
+                                <!--<li>Pellentesque at lectus in libero dapibus cursus. Sed arcu ipsum, varius at ultricies acuro, tincidunt iaculis diam.</li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                    </div>
+                    <!-- End 3rd Row -->
+                    <!-- Begin 4th Row -->
+                    <div class="entry">
+                        <h2>SKILLS</h2>
+                        <div class="content">
+                            <h3>Languages</h3>
+                            <ul class="skills" th:each="skill : ${developerSkills}">
+                                <li th:text="${skill.getName()} + ' ' + ${skill.getLevel()}">skill</li>
+                            </ul>
+                        </div>
+                        <!--<div class="content">-->
+                            <!--<ul class="skills">-->
+                                <!--<li>CSS/XHTML</li>-->
+                                <!--<li>PHP</li>-->
+                                <!--<li>JavaScript</li>-->
+                                <!--<li>Ruby on Rails</li>-->
+                                <!--<li>ActionScript</li>-->
+                                <!--<li>C++</li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="paper-bottom"></div>
+            </div>
+            <!-- End Paper -->
+        </div>
+    </div>
+</body>
+</html>

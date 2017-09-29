@@ -77,4 +77,15 @@ public class Address {
         Address other = (Address) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(city)
+                     .append(", ")
+                     .append(street)
+                     .append(" ")
+                     .append(number);
+        return stringBuilder.toString();
+    }
 }

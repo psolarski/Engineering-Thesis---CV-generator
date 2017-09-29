@@ -22,13 +22,26 @@ public class Project implements Serializable {
     private String description;
 
     @Column(nullable = false)
+    @Size(min = 10, max = 100)
+    private String position;
+
+    @Column(nullable = false)
+    @Size(min = 10, max = 100)
+    private String city;
+
+    @Column(nullable = false)
+    @Size(min = 10, max = 80)
+    private String company;
+
+    @Column(nullable = false)
     private LocalDate startDate;
 
     @Column(nullable = false)
     private LocalDate endDate;
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Developer.class, mappedBy = "projects")
-    private Set<Developer> developers = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "developer_id")
+    private Developer developer;
 
     @Version
     @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
@@ -37,8 +50,14 @@ public class Project implements Serializable {
     public Project() {
     }
 
-    public Project(String description, LocalDate startDate, LocalDate endDate) {
+    public Project(String description, String position,
+                   String city, String company,
+                   LocalDate startDate, LocalDate endDate) {
+
         this.description = description;
+        this.position = position;
+        this.city = city;
+        this.company = company;
         this.startDate = startDate;
         this.endDate = endDate;
     }
@@ -67,12 +86,36 @@ public class Project implements Serializable {
         this.endDate = endDate;
     }
 
-    public Set<Developer> getDevelopers() {
-        return developers;
+    public String getPosition() {
+        return position;
     }
 
-    public void setDevelopers(Set<Developer> developers) {
-        this.developers = developers;
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Developer getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(Developer developer) {
+        this.developer = developer;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 
     @Override

@@ -16,12 +16,17 @@ public class Education {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    @Size(min = 2, max = 40)
+    @Size(min = 2, max = 80)
+    private String university;
+
+    @Basic(optional = false)
+    @Column(nullable = false)
+    @Size(min = 2, max = 100)
     private String faculty;
 
     @Basic(optional = false)
     @Column(nullable = false)
-    @Size(min = 2, max = 40)
+    @Size(min = 2, max = 100)
     private String specialization;
 
     @Column(nullable = false)
@@ -38,7 +43,11 @@ public class Education {
     @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
     private long version = 0L;
 
-    public Education(String faculty, String specialization, LocalDate startDate, LocalDate endDate) {
+    public Education(String university, String faculty,
+                     String specialization,
+                     LocalDate startDate, LocalDate endDate) {
+
+        this.university = university;
         this.faculty = faculty;
         this.specialization = specialization;
         this.startDate = startDate;
@@ -80,6 +89,22 @@ public class Education {
         this.endDate = endDate;
     }
 
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+    public Developer getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(Developer developer) {
+        this.developer = developer;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof Education)) {
@@ -88,5 +113,4 @@ public class Education {
         Education other = (Education) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
-
 }

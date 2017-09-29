@@ -32,7 +32,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
+            /* Employee section */
             .antMatchers(HttpMethod.GET, "/cv-generator/employees").hasAnyRole("ADMIN", "DEV", "HR")
+
+            /* Developer section */
+            .antMatchers(HttpMethod.GET, "/cv-generator/developers/*/cv").hasAnyRole("ADMIN", "DEV", "HR")
+
+            /* Other */
             .antMatchers(HttpMethod.POST, "/").permitAll()
             .anyRequest().authenticated();
 

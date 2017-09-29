@@ -49,14 +49,4 @@ public class EmployeeController {
         employeeService.updateEmployee(employee);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    @RequestMapping(value = "/log-in", method = RequestMethod.POST)
-    public ResponseEntity signUp(@RequestParam(value= "email") String email,
-                       @RequestParam(value = "password") String password) {
-
-        Employee employee = employeeService.findByEmail(email);
-//        employee.setPassword(bCryptPasswordEncoder.encode(password));
-        System.out.println("PASSWORD ENCODE " + bCryptPasswordEncoder.encode(password));
-        return new ResponseEntity(HttpStatus.OK);
-    }
 }

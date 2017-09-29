@@ -55,6 +55,11 @@ public abstract class Employee implements UserDetails {
 
     @Basic(optional = false)
     @Column(nullable = false)
+    @Size(min = 7, max = 9)
+    private String phone;
+
+    @Basic(optional = false)
+    @Column(nullable = false)
     private LocalDate creationDate;
 
     @Basic(optional = false)
@@ -83,13 +88,15 @@ public abstract class Employee implements UserDetails {
     }
 
     public Employee(String name, String surname, String username,
-                    String password, String email, LocalDate creationDate) {
+                    String password, String email, String phone,
+                    LocalDate creationDate) {
 
         this.name = name;
         this.surname = surname;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.phone = phone;
         this.creationDate = creationDate;
         this.active = true;
     }
@@ -187,6 +194,14 @@ public abstract class Employee implements UserDetails {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Address getAddress() {
