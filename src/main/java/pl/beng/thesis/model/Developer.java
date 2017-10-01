@@ -1,6 +1,9 @@
 package pl.beng.thesis.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -9,6 +12,9 @@ import java.util.Set;
 @Entity
 @Table(name = "developer")
 @PrimaryKeyJoinColumn(name = "developer_id", referencedColumnName = "employee_id")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Developer extends Employee {
 
     public Developer(String name,
@@ -25,16 +31,16 @@ public class Developer extends Employee {
     public Developer() {
     }
 
-    @OneToMany(mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     private Set<Skill> skills = new HashSet<>();
 
-    @OneToMany(mappedBy = "developer", cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "developer", cascade = {CascadeType.REFRESH})
     private Set<Notification> notifications = new HashSet<>();
 
-    @OneToMany(mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     private Set<Education> educations = new HashSet<>();
 
-    @OneToMany(mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     private Set<Project> projects = new HashSet<>();
 
 

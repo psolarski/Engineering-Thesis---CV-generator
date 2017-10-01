@@ -11,6 +11,9 @@ import pl.beng.thesis.model.Developer;
 import pl.beng.thesis.repository.DeveloperRepository;
 import pl.beng.thesis.util.PdfGeneratorUtil;
 
+import javax.transaction.Transactional;
+import java.util.List;
+
 @Service
 public class DeveloperService {
 
@@ -58,5 +61,25 @@ public class DeveloperService {
 
         /* Generate and return pdf as byte array */
         return pdfGeneratorUtil.createPdf(processedHtml);
+    }
+
+    @Transactional
+    public Developer find(Long id) {
+        return developerRepository.findOne(id);
+    }
+
+    @Transactional
+    public List<Developer> findAll() {
+        return developerRepository.findAll();
+    }
+
+    @Transactional
+    public void updateEmployee(Developer updatedEmployee) {
+        developerRepository.saveAndFlush(updatedEmployee);
+    }
+
+    @Transactional
+    public Developer findByEmail(String email) {
+        return developerRepository.findByEmail(email);
     }
 }

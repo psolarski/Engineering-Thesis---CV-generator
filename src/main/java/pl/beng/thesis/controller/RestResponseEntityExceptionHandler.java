@@ -24,7 +24,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(value = { RuntimeException.class})
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
 
-        String bodyOfResponse = "Uppps, something went wrong!";
+        String bodyOfResponse = "Upsss, something went wrong!";
         return handleExceptionInternal(ex, bodyOfResponse,
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }

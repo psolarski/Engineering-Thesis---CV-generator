@@ -24,18 +24,35 @@ public class EmployeeController {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    /**
+     * Find and return list of employees
+     *
+     * @return all employees list
+     */
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<Employee>> findAll() {
 
         return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
     }
 
+    /**
+     * Find and return employee with specified id
+     *
+     * @param id employee id
+     * @return Employee with given id
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Employee> findOne(@PathVariable("id") long id) {
 
         return new ResponseEntity<>(employeeService.find(id), HttpStatus.OK);
     }
 
+    /**
+     * Find and update employee with given body
+     *
+     * @param updatedEmployee employee with new values
+     * @return Employee with updated fields
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateEmployee(@RequestBody Employee updatedEmployee) {
 

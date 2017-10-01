@@ -1,6 +1,8 @@
 package pl.beng.thesis.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +21,16 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "employee")
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonDeserialize(as = Developer.class)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Developer.class, name = "developer"),
+        @JsonSubTypes.Type(value = Administrator.class, name = "administrator"),
+        @JsonSubTypes.Type(value = HumanResource.class, name = "human-resource")
+})
 public abstract class Employee implements UserDetails {
 
     private static final long serialVersionUID = 1L;
@@ -43,6 +54,7 @@ public abstract class Employee implements UserDetails {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @JsonIgnore
     @Basic(optional = false)
     @Column(nullable = false)
     @Size(min = 8, max = 64)

@@ -5,4 +5,7 @@ import pl.beng.thesis.model.Developer;
 
 public interface DeveloperRepository extends JpaRepository<Developer, Long> {
 
+    Developer findByUsername(String username);
+
+    Developer findByEmail(String email);
 }
