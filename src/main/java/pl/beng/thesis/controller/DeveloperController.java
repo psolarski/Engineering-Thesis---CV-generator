@@ -23,7 +23,7 @@ public class DeveloperController {
         this.developerService = developerService;
     }
 
-    @RequestMapping(value = "/{id}/cv", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/cv", method = RequestMethod.POST)
     public ResponseEntity<byte[]> generateDeveloperCv(@PathVariable("id") long id) throws DocumentException {
 
         byte[] processedHtml = developerService.generateDeveloperCv(id);
