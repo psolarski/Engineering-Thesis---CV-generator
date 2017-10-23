@@ -20,7 +20,9 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Date;
 
 
@@ -41,13 +43,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         initializeDependencies(request);
         try {
-            Employee employee = new ObjectMapper()
-                    .readValue(request.getInputStream(), Employee.class);
+            Employee employee = new ObjectMapper().readValue(request.getInputStream(), Employee.class);
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(employee.getUsername(), employee.getPassword())
             );
-
         } catch (IOException ex) {
             logger.error("Authentication failed! " + ex);
             response.setStatus(400);
@@ -73,6 +73,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader(securityConstants.getHeaderString(), securityConstants.getTokenPrefix() + token);
         response.setContentType("application/json");
         response.addHeader("Access-Control-Expose-Headers", "Authorization");
+        response.getOutputStream().write("{}".getBytes());
     }
 
     /* Initialize spring components */

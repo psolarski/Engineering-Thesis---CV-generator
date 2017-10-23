@@ -37,4 +37,9 @@ public class EmployeeService {
     public Employee findByEmail(String email) {
         return employeeRepository.findByEmail(email);
     }
+
+    @Transactional
+    public Employee findByUsername(String username) {
+        return employeeRepository.findByUsername(username);
+    }
 }

@@ -16,7 +16,7 @@ import pl.beng.thesis.service.DeveloperService;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "cv-generator/developers")
+@RequestMapping(value = "developers")
 public class DeveloperController {
 
     private final DeveloperService developerService;

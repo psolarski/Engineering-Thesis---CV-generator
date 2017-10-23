@@ -2,6 +2,7 @@ package pl.beng.thesis.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "developer")
+@JsonTypeName("developer")
 @PrimaryKeyJoinColumn(name = "developer_id", referencedColumnName = "employee_id")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,

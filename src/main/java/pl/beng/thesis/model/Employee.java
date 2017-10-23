@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
         @JsonSubTypes.Type(value = Administrator.class, name = "administrator"),
         @JsonSubTypes.Type(value = HumanResource.class, name = "human-resource")
 })
+
 public abstract class Employee implements UserDetails {
 
     private static final long serialVersionUID = 1L;
@@ -54,7 +55,6 @@ public abstract class Employee implements UserDetails {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @JsonIgnore
     @Basic(optional = false)
     @Column(nullable = false)
     @Size(min = 8, max = 64)

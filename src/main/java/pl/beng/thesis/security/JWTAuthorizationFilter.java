@@ -55,15 +55,15 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         if (token != null) {
 
             /* parse the token. */
-            String user = Jwts.parser()
+            String username = Jwts.parser()
                     .setSigningKey(securityConstants.getSecret())
                     .parseClaimsJws(token.replace(securityConstants.getTokenPrefix(), ""))
                     .getBody()
                     .getIssuer();
 
-            Employee employee = employeeRepository.findByUsername(user);
+            Employee employee = employeeRepository.findByUsername(username);
             if (employee != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, employee.getAuthorities());
+                return new UsernamePasswordAuthenticationToken(username, null, employee.getAuthorities());
             } else {
                 logger.error("Authentication failed!");
                 return null;

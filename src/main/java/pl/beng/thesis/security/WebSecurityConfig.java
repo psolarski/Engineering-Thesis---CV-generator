@@ -33,13 +33,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
             /* Employee section */
-            .antMatchers(HttpMethod.GET, "/cv-generator/employees").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/employees").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/employees/*").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/employees/employee").permitAll()
 
             /* Developer section */
-            .antMatchers(HttpMethod.GET, "/cv-generator/developers/*/cv").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/developers/*/cv").hasAnyRole("ADMIN", "DEV", "HR")
 
             /* Other */
-            .antMatchers(HttpMethod.POST, "/").permitAll()
+            .antMatchers(HttpMethod.POST, "/login").permitAll()
             .anyRequest().authenticated();
 
         http.cors().and()
