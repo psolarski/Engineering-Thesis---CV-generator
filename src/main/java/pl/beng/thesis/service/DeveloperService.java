@@ -74,7 +74,7 @@ public class DeveloperService {
     }
 
     @Transactional
-    public void updateEmployee(Developer updatedEmployee) {
+    public void updateDeveloper(Developer updatedEmployee) {
         developerRepository.saveAndFlush(updatedEmployee);
     }
 

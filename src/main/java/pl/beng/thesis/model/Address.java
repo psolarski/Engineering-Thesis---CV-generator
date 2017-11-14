@@ -11,7 +11,7 @@ public class Address {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "address_id", nullable = false, updatable = false)
     private Long id;
 

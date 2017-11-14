@@ -17,6 +17,8 @@ import java.util.Set;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
+@NamedEntityGraph(name = "graph.developer",
+    attributeNodes = @NamedAttributeNode("notifications"))
 public class Developer extends Employee {
 
     public Developer(String name,
@@ -28,15 +30,23 @@ public class Developer extends Employee {
                      LocalDate creationDate) {
 
         super(name, surname, username, password, email, phone, creationDate);
+        dataLastModificationDate = LocalDate.now();
     }
 
     public Developer() {
     }
 
+
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private LocalDate dataLastModificationDate;
+
+    private LocalDate lastNotificationDate;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     private Set<Skill> skills = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "developer", cascade = {CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     private Set<Notification> notifications = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
@@ -44,7 +54,6 @@ public class Developer extends Employee {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST})
     private Set<Project> projects = new HashSet<>();
-
 
     public Set<Skill> getSkills() {
         return skills;
@@ -76,5 +85,21 @@ public class Developer extends Employee {
 
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
+    }
+
+    public LocalDate getDataLastModificationDate() {
+        return dataLastModificationDate;
+    }
+
+    public void setDataLastModificationDate(LocalDate dataLastModificationDate) {
+        this.dataLastModificationDate = dataLastModificationDate;
+    }
+
+    public LocalDate getLastNotificationDate() {
+        return lastNotificationDate;
+    }
+
+    public void setLastNotificationDate(LocalDate lastNotificationDate) {
+        this.lastNotificationDate = lastNotificationDate;
     }
 }
