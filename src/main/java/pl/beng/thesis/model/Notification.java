@@ -11,7 +11,7 @@ public class Notification implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notification_id", nullable = false, updatable = false)
     private Long id;
 
@@ -30,13 +30,19 @@ public class Notification implements Serializable {
     @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
     private long version = 0L;
 
-    public Notification(String description, LocalDate creationDate) {
+    public Notification(String description) {
         this.description = description;
-        this.creationDate = creationDate;
+        this.creationDate = LocalDate.now();
+    }
+
+    public Notification(String description, Developer developer) {
+        this.description = description;
+        this.creationDate = LocalDate.now();
+        this.developer = developer;
     }
 
     public Notification() {
-
+        this.creationDate = LocalDate.now();
     }
 
     public String getDescription() {
@@ -53,6 +59,14 @@ public class Notification implements Serializable {
 
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Developer getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(Developer developer) {
+        this.developer = developer;
     }
 
     @Override

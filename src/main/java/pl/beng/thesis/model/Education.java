@@ -10,7 +10,7 @@ public class Education {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "education_id", nullable = false, updatable = false)
     private Long id;
 
