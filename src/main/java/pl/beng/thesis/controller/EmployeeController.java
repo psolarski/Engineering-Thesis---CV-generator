@@ -37,6 +37,7 @@ public class EmployeeController {
         Employee loggedEmployee = employeeService.findByUsername(username);
         return new ResponseEntity<>(loggedEmployee, HttpStatus.OK);
     }
+
     /**
      * Find and return list of employees
      *
@@ -44,7 +45,6 @@ public class EmployeeController {
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity<List<Employee>> findAll() {
-        logger.info(bCryptPasswordEncoder.encode("password"));
 
         return new ResponseEntity<>(employeeService.findAll(), HttpStatus.OK);
     }

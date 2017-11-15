@@ -112,6 +112,20 @@
             <artifactId>flying-saucer-pdf</artifactId>
             <version>9.1.7</version>
         </dependency>
+        <!--Postgresql-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4-1200-jdbc4</version>
+
+            <!--Excluded slf4j to prevent Multiple SLF4J bindings-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>
