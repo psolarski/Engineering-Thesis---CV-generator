@@ -82,7 +82,6 @@ public class EmployeeController {
     @RequestMapping(value = "/employee", method = RequestMethod.POST)
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee newEmployee) {
 
-        logger.info("Creating new Employee... " + newEmployee.getUsername());
         return new ResponseEntity<>(employeeService.createEmployee(newEmployee), HttpStatus.OK);
     }
 }
