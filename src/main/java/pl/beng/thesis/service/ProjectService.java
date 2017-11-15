@@ -36,6 +36,17 @@ public class ProjectService {
 
     @Transactional
     public Project update(Project updatedProject) {
-        return projectRepository.saveAndFlush(updatedProject);
+
+        Project project = projectRepository.findOne(updatedProject.getId());
+
+        project.setCity(updatedProject.getCity());
+        project.setCompany(updatedProject.getCompany());
+        project.setDescription(updatedProject.getDescription());
+        project.setEndDate(updatedProject.getEndDate());
+        project.setPosition(updatedProject.getPosition());
+        project.setStartDate(updatedProject.getStartDate());
+        project.setDeveloper(updatedProject.getDeveloper());
+
+        return projectRepository.saveAndFlush(project);
     }
 }

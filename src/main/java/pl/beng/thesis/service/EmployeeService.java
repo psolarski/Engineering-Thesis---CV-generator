@@ -19,6 +19,11 @@ public class EmployeeService {
     }
 
     @Transactional
+    public Employee createEmployee(Employee newEmployee) {
+        return employeeRepository.saveAndFlush(newEmployee);
+    }
+
+    @Transactional
     public Employee find(Long id) {
         return employeeRepository.findOne(id);
     }
@@ -29,8 +34,16 @@ public class EmployeeService {
     }
 
     @Transactional
-    public void updateEmployee(Employee updatedEmployee) {
-        employeeRepository.saveAndFlush(updatedEmployee);
+    public Employee updateEmployee(Employee updatedEmployee) {
+
+        Employee employee = employeeRepository.findOne(updatedEmployee.getId());
+
+        employee.setAddress(updatedEmployee.getAddress());
+        employee.setEmail(updatedEmployee.getEmail());
+        employee.setName(updatedEmployee.getName());
+        employee.setSurname(updatedEmployee.getSurname());
+
+        return employeeRepository.saveAndFlush(employee);
     }
 
     @Transactional

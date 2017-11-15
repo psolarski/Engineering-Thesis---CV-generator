@@ -36,6 +36,13 @@ public class SkillService {
 
     @Transactional
     public Skill update(Skill updatedSkill) {
-        return skillRepository.saveAndFlush(updatedSkill);
+
+        Skill skill = skillRepository.findOne(updatedSkill.getId());
+
+        skill.setLevel(updatedSkill.getLevel());
+        skill.setName(updatedSkill.getName());
+        skill.setDeveloper(updatedSkill.getDeveloper());
+
+        return skillRepository.saveAndFlush(skill);
     }
 }

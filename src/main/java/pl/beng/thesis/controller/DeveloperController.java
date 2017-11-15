@@ -69,8 +69,8 @@ public class DeveloperController {
         headers.add("Content-Disposition", "Developer-CV");
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Pragma", "no-cache");
-
         headers.setContentLength(processedHtml.length);
+
         return new ResponseEntity<>(processedHtml, headers, HttpStatus.CREATED);
     }
 }

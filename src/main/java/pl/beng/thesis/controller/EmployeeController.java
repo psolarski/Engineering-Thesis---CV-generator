@@ -4,13 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pl.beng.thesis.model.Employee;
-import pl.beng.thesis.security.SecurityConstants;
 import pl.beng.thesis.service.EmployeeService;
 
 import java.util.List;
@@ -29,7 +27,10 @@ public class EmployeeController {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-
+    /**
+     * Method used to fetch employee from JWT.
+     * @return Employee with given token
+     */
     @RequestMapping(value = "/employee", method = RequestMethod.GET)
     public ResponseEntity<Employee> findLoggedEmployee() {
 
@@ -68,16 +69,20 @@ public class EmployeeController {
      * @return Employee with updated fields
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateEmployee(@RequestBody Employee updatedEmployee) {
+    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee updatedEmployee) {
 
-        Employee employee = employeeService.find(updatedEmployee.getId());
+        return new ResponseEntity<>(employeeService.updateEmployee(updatedEmployee), HttpStatus.OK);
+    }
 
-        employee.setAddress(updatedEmployee.getAddress());
-        employee.setEmail(updatedEmployee.getEmail());
-        employee.setName(updatedEmployee.getName());
-        employee.setSurname(updatedEmployee.getSurname());
+    /**
+     * Create new employee.
+     * @param newEmployee employee to persist.
+     * @return created employee.
+     */
+    @RequestMapping(value = "/employee", method = RequestMethod.POST)
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee newEmployee) {
 
-        employeeService.updateEmployee(employee);
-        return new ResponseEntity<>(HttpStatus.OK);
+        logger.info("Creating new Employee... " + newEmployee.getUsername());
+        return new ResponseEntity<>(employeeService.createEmployee(newEmployee), HttpStatus.OK);
     }
 }

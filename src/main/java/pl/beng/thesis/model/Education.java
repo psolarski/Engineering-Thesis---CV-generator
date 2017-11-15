@@ -105,6 +105,10 @@ public class Education {
         this.developer = developer;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof Education)) {

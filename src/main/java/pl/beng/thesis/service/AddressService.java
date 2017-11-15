@@ -35,6 +35,13 @@ public class AddressService {
 
     @Transactional
     public Address updateAddress(Address updatedAddress) {
-        return addressRepository.saveAndFlush(updatedAddress);
+
+        Address address = addressRepository.findOne(updatedAddress.getId());
+
+        address.setCity(updatedAddress.getCity());
+        address.setNumber(updatedAddress.getNumber());
+        address.setStreet(updatedAddress.getStreet());
+
+        return addressRepository.saveAndFlush(address);
     }
 }

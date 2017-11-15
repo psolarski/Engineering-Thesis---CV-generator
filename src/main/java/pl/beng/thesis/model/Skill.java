@@ -54,6 +54,22 @@ public class Skill implements Serializable {
         this.level = level;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    public Developer getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(Developer developer) {
+        this.developer = developer;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof Skill)) {

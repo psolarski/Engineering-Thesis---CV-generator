@@ -32,13 +32,42 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-            /* Employee section */
-            .antMatchers(HttpMethod.GET, "/employees").hasAnyRole("ADMIN", "DEV", "HR")
-            .antMatchers(HttpMethod.GET, "/employees/*").hasAnyRole("ADMIN", "DEV", "HR")
-            .antMatchers(HttpMethod.GET, "/employees/employee").permitAll()
+
+            /* Address section */
+            .antMatchers(HttpMethod.GET, "/addresses").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/addresses/*").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.PUT, "/addresses/*").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.POST, "/addresses/address").hasAnyRole("ADMIN", "DEV", "HR")
 
             /* Developer section */
             .antMatchers(HttpMethod.GET, "/developers/*/cv").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/developers").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/developers/*").hasAnyRole("ADMIN", "DEV", "HR")
+
+            /* Education section */
+            .antMatchers(HttpMethod.GET, "/educations").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/educations/*").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.PUT, "/educations/*").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.POST, "/educations/education").hasAnyRole("ADMIN", "DEV", "HR")
+
+            /* Employee section */
+            .antMatchers(HttpMethod.GET, "/employees").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/employees/*").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.PUT, "/employees/*").hasAnyRole("ADMIN", "HR")
+            .antMatchers(HttpMethod.GET, "/employees/employee").permitAll()
+            .antMatchers(HttpMethod.POST, "/employees/employee").hasAnyRole("ADMIN", "HR")
+
+            /* Project section */
+            .antMatchers(HttpMethod.GET, "/projects").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/projects/*").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.PUT, "/projects/*").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.POST, "/projects/project").hasAnyRole("ADMIN", "DEV", "HR")
+
+            /* Skill section */
+            .antMatchers(HttpMethod.GET, "/skills").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/skills/*").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.PUT, "/skills/*").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.POST, "/skills/skill").hasAnyRole("ADMIN", "DEV", "HR")
 
             /* Other */
             .antMatchers(HttpMethod.POST, "/login").permitAll()
