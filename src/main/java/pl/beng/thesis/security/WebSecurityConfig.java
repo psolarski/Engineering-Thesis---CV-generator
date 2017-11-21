@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,6 +17,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
@@ -53,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             /* Employee section */
             .antMatchers(HttpMethod.GET, "/employees").hasAnyRole("ADMIN", "DEV", "HR")
             .antMatchers(HttpMethod.GET, "/employees/*").hasAnyRole("ADMIN", "DEV", "HR")
-            .antMatchers(HttpMethod.PUT, "/employees/*").hasAnyRole("ADMIN", "HR")
+            .antMatchers(HttpMethod.PUT, "/employees/*").hasAnyRole("ADMIN", "HR", "DEV")
             .antMatchers(HttpMethod.GET, "/employees/employee").permitAll()
             .antMatchers(HttpMethod.POST, "/employees/employee").hasAnyRole("ADMIN", "HR")
 

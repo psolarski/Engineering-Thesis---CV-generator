@@ -4,6 +4,7 @@ import com.lowagie.text.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.*;
@@ -38,6 +39,7 @@ public class DeveloperService {
      *
      * @param id of developer
      */
+    @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public byte[] generateDeveloperCv(Long id) throws DocumentException {
 
         /* Find developer from database */
@@ -64,21 +66,26 @@ public class DeveloperService {
     }
 
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Developer find(Long id) {
         return developerRepository.findOne(id);
     }
 
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public List<Developer> findAll() {
         return developerRepository.findAll();
     }
 
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
+            "OR (hasRole('ROLE_DEV') AND #updatedEmployee.username == principal)")
     public void updateDeveloper(Developer updatedEmployee) {
         developerRepository.saveAndFlush(updatedEmployee);
     }
 
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Developer findByEmail(String email) {
         return developerRepository.findByEmail(email);
     }

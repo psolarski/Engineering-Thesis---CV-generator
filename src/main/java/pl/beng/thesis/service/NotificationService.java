@@ -4,11 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import pl.beng.thesis.model.Notification;
 
 import pl.beng.thesis.repository.NotificationRepository;
 
+import javax.annotation.security.DenyAll;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -36,6 +38,7 @@ public class NotificationService {
      * @return notification with given id
      */
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Notification find(Long id) {
         return notificationRepository.findOne(id);
     }
@@ -45,6 +48,7 @@ public class NotificationService {
      * @return notification list
      */
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public List<Notification> findAll() {
         return notificationRepository.findAll();
     }
@@ -55,6 +59,7 @@ public class NotificationService {
      * @return updatedNotification
      */
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
     public Notification update(Notification updatedNotification) {
         return notificationRepository.saveAndFlush(updatedNotification);
     }
@@ -65,6 +70,7 @@ public class NotificationService {
      * @return created notification
      */
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
     public Notification createNotification(Notification newNotification) {
         return notificationRepository.saveAndFlush(newNotification);
     }
@@ -75,6 +81,7 @@ public class NotificationService {
      * in past year.
      */
     @Scheduled(cron = "${cron.expression}")
+    @DenyAll
     public void scheduledNotificationUpdate() {
         logger.info("START NOTIFICATION UPDATE!");
         developerService.findAll().forEach(developer -> {

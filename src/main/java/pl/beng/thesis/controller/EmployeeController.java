@@ -68,7 +68,7 @@ public class EmployeeController {
      * @param updatedEmployee employee with new values
      * @return Employee with updated fields
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/employee", method = RequestMethod.PUT)
     public ResponseEntity<Employee> updateEmployee(@RequestBody Employee updatedEmployee) {
 
         return new ResponseEntity<>(employeeService.updateEmployee(updatedEmployee), HttpStatus.OK);
