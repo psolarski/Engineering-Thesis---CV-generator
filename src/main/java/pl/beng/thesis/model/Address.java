@@ -5,15 +5,10 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
-@Entity
+@Embeddable
 public class Address {
 
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "address_id", nullable = false, updatable = false)
-    private Long id;
 
     @Column(nullable = false)
     @Size(min = 3, max = 50)
@@ -27,10 +22,6 @@ public class Address {
     @Min(1)
     @Max(300)
     private int number;
-
-    @Version
-    @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
-    private long version = 0L;
 
     public Address() {
     }
@@ -63,19 +54,6 @@ public class Address {
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof Address)) {
-            return false;
-        }
-        Address other = (Address) object;
-        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override

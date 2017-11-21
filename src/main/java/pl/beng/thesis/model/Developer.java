@@ -41,6 +41,7 @@ public class Developer extends Employee {
     @Column(nullable = false)
     private LocalDate dataLastModificationDate;
 
+    @Transient
     private LocalDate lastNotificationDate;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "developer", cascade = {CascadeType.REFRESH, CascadeType.PERSIST})

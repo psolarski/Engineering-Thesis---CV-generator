@@ -82,8 +82,7 @@ public abstract class Employee implements UserDetails {
     @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
     private long version = 0L;
 
-    @OneToOne (cascade=CascadeType.PERSIST)
-    @JoinColumn(name="address_id", nullable=false)
+    @Embedded
     private Address address;
 
     @ManyToMany(fetch = FetchType.EAGER, targetEntity = Role.class)
