@@ -16,6 +16,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -71,9 +74,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.PUT, "/skills/*").hasAnyRole("ADMIN", "DEV", "HR")
             .antMatchers(HttpMethod.POST, "/skills/skill").hasAnyRole("ADMIN", "DEV", "HR")
 
+            /* Outlook */
+//            .antMatchers(HttpMethod.GET, "/outlook/*").permitAll()
+
             /* Other */
-            .antMatchers(HttpMethod.POST, "/login").permitAll()
-            .anyRequest().authenticated();
+            .antMatchers(HttpMethod.POST, "/login").permitAll();
+//            .anyRequest().authenticated();
 
         http.cors().and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
@@ -110,10 +116,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-        configuration.addAllowedHeader("PUT");
-        configuration.addAllowedHeader("DELETE");
-        configuration.addAllowedHeader("POST");
-        configuration.addAllowedHeader("GET");
+        configuration.addAllowedMethod("PUT");
+        configuration.addAllowedMethod("DELETE");
+        configuration.addAllowedMethod("POST");
+        configuration.addAllowedMethod("GET");
+        configuration.addAllowedHeader("Access-Control-Allow-Origin");
+        configuration.addAllowedHeader("Access-Control-Allow-Methods");
+        configuration.addAllowedHeader("Access-Control-Allow-Headers");
+        configuration.addAllowedHeader("Access-Control-Max-Age");
+        configuration.setAllowedOrigins(Collections.singletonList("https://microsoft.com"));
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
