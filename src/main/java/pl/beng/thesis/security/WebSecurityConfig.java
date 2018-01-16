@@ -45,9 +45,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, "/addresses/address").hasAnyRole("ADMIN", "DEV", "HR")
 
             /* Developer section */
-            .antMatchers(HttpMethod.GET, "/developers/*/cv").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/developers/developer/*/cv").hasAnyRole("ADMIN", "DEV", "HR")
             .antMatchers(HttpMethod.GET, "/developers").hasAnyRole("ADMIN", "DEV", "HR")
             .antMatchers(HttpMethod.GET, "/developers/*").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.POST, "/developers/developer").hasAnyRole("ADMIN", "HR")
+            .antMatchers(HttpMethod.POST, "/developers/developer/*/educations/education").hasAnyRole("ADMIN", "HR", "DEV")
+            .antMatchers(HttpMethod.POST, "/developers/developer/*/projects/project").hasAnyRole("ADMIN", "HR", "DEV")
+            .antMatchers(HttpMethod.POST, "/developers/developer/*/skills").hasAnyRole("ADMIN", "HR", "DEV")
 
             /* Education section */
             .antMatchers(HttpMethod.GET, "/educations").hasAnyRole("ADMIN", "DEV", "HR")
@@ -59,8 +63,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET, "/employees").hasAnyRole("ADMIN", "DEV", "HR")
             .antMatchers(HttpMethod.GET, "/employees/*").hasAnyRole("ADMIN", "DEV", "HR")
             .antMatchers(HttpMethod.PUT, "/employees/*").hasAnyRole("ADMIN", "HR", "DEV")
+            .antMatchers(HttpMethod.PUT, "/employees/*/{username}/password").hasAnyRole("ADMIN", "HR", "DEV")
             .antMatchers(HttpMethod.GET, "/employees/employee").permitAll()
             .antMatchers(HttpMethod.POST, "/employees/employee").hasAnyRole("ADMIN", "HR")
+            .antMatchers(HttpMethod.POST, "/employees/employee/{username}").hasAnyRole("ADMIN", "HR", "DEV")
 
             /* Project section */
             .antMatchers(HttpMethod.GET, "/projects").hasAnyRole("ADMIN", "DEV", "HR")
@@ -75,7 +81,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, "/skills/skill").hasAnyRole("ADMIN", "DEV", "HR")
 
             /* Outlook */
-//            .antMatchers(HttpMethod.GET, "/outlook/*").permitAll()
+            .antMatchers(HttpMethod.GET, "/outlook/mails").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.POST, "/outlook/mail").hasAnyRole("ADMIN", "DEV", "HR")
 
             /* Other */
             .antMatchers(HttpMethod.POST, "/login").permitAll();
@@ -124,7 +131,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedHeader("Access-Control-Allow-Methods");
         configuration.addAllowedHeader("Access-Control-Allow-Headers");
         configuration.addAllowedHeader("Access-Control-Max-Age");
-        configuration.setAllowedOrigins(Collections.singletonList("https://microsoft.com"));
+//        configuration.setAllowedOrigins(Collections.singletonList("https://microsoft.com"));
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }

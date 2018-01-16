@@ -1,5 +1,6 @@
 package pl.beng.thesis.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -9,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -96,11 +98,12 @@ public abstract class Employee implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     public Employee() {
+        this.creationDate = LocalDate.now();
+        this.active = true;
     }
 
     public Employee(String name, String surname, String username,
-                    String password, String email, String phone,
-                    LocalDate creationDate) {
+                    String password, String email, String phone) {
 
         this.name = name;
         this.surname = surname;
@@ -108,14 +111,13 @@ public abstract class Employee implements UserDetails {
         this.password = password;
         this.email = email;
         this.phone = phone;
-        this.creationDate = creationDate;
-        this.active = true;
+        this.creationDate = LocalDate.now();
     }
 
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (roles.isEmpty() || roles == null) {
+        if (roles.isEmpty()) {
             return Collections.emptySet();
         }
 
@@ -191,6 +193,7 @@ public abstract class Employee implements UserDetails {
         this.email = email;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate getCreationDate() {
         return creationDate;
     }

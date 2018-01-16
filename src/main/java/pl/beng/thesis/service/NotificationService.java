@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import pl.beng.thesis.model.Notification;
 
 import pl.beng.thesis.repository.NotificationRepository;
 
 import javax.annotation.security.DenyAll;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class NotificationService {
      * @param updatedNotification notification to update
      * @return updatedNotification
      */
-    @Transactional
+    @Transactional()
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
     public Notification update(Notification updatedNotification) {
         return notificationRepository.saveAndFlush(updatedNotification);

@@ -1,4 +1,4 @@
-package pl.beng.thesis.util;
+package pl.beng.thesis.aspect;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;

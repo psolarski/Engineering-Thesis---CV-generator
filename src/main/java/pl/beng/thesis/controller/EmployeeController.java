@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import pl.beng.thesis.model.DTO.NewPasswordDTO;
 import pl.beng.thesis.model.Employee;
 import pl.beng.thesis.service.EmployeeService;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -18,13 +20,11 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     /**
@@ -63,11 +63,23 @@ public class EmployeeController {
     }
 
     /**
-     * Find and update employee with given body
+     * Find and return employee with specified username
      *
-     * @param updatedEmployee employee with new values
-     * @return Employee with updated fields
+     * @param username given username
+     * @return Employee with given username
      */
+    @RequestMapping(value = "/employee/{username}", method = RequestMethod.GET)
+    public ResponseEntity<Employee> findOne(@PathVariable("username") String username) {
+
+        return new ResponseEntity<>(employeeService.findByUsername(username), HttpStatus.OK);
+    }
+
+        /**
+         * Find and update employee with given body
+         *
+         * @param updatedEmployee employee with new values
+         * @return Employee with updated fields
+         */
     @RequestMapping(value = "/employee", method = RequestMethod.PUT)
     public ResponseEntity<Employee> updateEmployee(@RequestBody Employee updatedEmployee) {
 
@@ -83,5 +95,19 @@ public class EmployeeController {
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee newEmployee) {
 
         return new ResponseEntity<>(employeeService.createEmployee(newEmployee), HttpStatus.OK);
+    }
+
+
+
+    @RequestMapping(value = "/employee/{username}/password", method = RequestMethod.PUT)
+    public ResponseEntity<Employee> changePassword(@PathVariable("username") String username,
+                                                   @RequestBody NewPasswordDTO newPasswordDTO) throws Exception {
+
+        return new ResponseEntity<>(employeeService.changePassword
+                        (username,
+                         newPasswordDTO.getNewPassword(),
+                         newPasswordDTO.getOldPassword(),
+                         newPasswordDTO.getNewPasswordConfirmed()),
+            HttpStatus.OK);
     }
 }

@@ -25,11 +25,11 @@ public class Project implements Serializable {
     private String position;
 
     @Column(nullable = false)
-    @Size(min = 10, max = 100)
+    @Size(min = 3, max = 100)
     private String city;
 
     @Column(nullable = false)
-    @Size(min = 10, max = 80)
+    @Size(min = 3, max = 80)
     private String company;
 
     @Column(nullable = false)

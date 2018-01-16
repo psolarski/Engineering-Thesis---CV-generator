@@ -26,14 +26,14 @@ public class Developer extends Employee {
                      String username,
                      String password,
                      String email,
-                     String phone,
-                     LocalDate creationDate) {
+                     String phone) {
 
-        super(name, surname, username, password, email, phone, creationDate);
+        super(name, surname, username, password, email, phone);
         dataLastModificationDate = LocalDate.now();
     }
 
     public Developer() {
+        dataLastModificationDate = LocalDate.now();
     }
 
 

@@ -15,11 +15,11 @@ public class Skill implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-    @Size(min = 5, max = 40)
+    @Size(min = 3, max = 40)
     private String name;
 
     @Column(nullable = false)
-    @Size(min = 5, max = 40)
+    @Size(min = 3, max = 40)
     private String level;
 
     @Version
