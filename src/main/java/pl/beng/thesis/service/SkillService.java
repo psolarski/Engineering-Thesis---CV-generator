@@ -3,10 +3,12 @@ package pl.beng.thesis.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import pl.beng.thesis.model.Skill;
 import pl.beng.thesis.repository.SkillRepository;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
@@ -20,25 +22,25 @@ public class SkillService {
         this.skillRepository = skillRepository;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Skill find(Long id) {
         return skillRepository.findOne(id);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public List<Skill> findAll() {
         return skillRepository.findAll();
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Skill create(Skill newSkill) {
         return skillRepository.saveAndFlush(newSkill);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
             "OR (hasRole('ROLE_DEV') AND #updatedSkill.developer.username == principal)")
     public Skill update(Skill updatedSkill) {

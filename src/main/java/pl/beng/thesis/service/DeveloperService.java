@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.*;
@@ -82,40 +84,40 @@ public class DeveloperService {
         return pdfGeneratorUtil.createPdf(processedHtml);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Developer find(Long id) {
         return developerRepository.findOne(id);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public List<Developer> findAll() {
         return developerRepository.findAll();
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = false)
     @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
             "OR (hasRole('ROLE_DEV') AND #updatedEmployee.username == principal)")
     public void updateDeveloper(Developer updatedEmployee) {
         developerRepository.saveAndFlush(updatedEmployee);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Developer findByEmail(String email) {
         return developerRepository.findByEmail(email);
     }
 
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Developer findByUsername(String username) {
         return developerRepository.findByUsername(username);
     }
 
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
     public Developer createDeveloper(Developer newDeveloper) {
         logger.info("CREATING NEW DEVELOPER");
@@ -123,7 +125,7 @@ public class DeveloperService {
         return developerRepository.saveAndFlush(newDeveloper);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
             "OR (hasRole('ROLE_DEV') AND #username == principal)")
     public Developer addNewSkill(String username, Education newEducation) {
@@ -140,7 +142,7 @@ public class DeveloperService {
         return developerRepository.saveAndFlush(developer);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
             "OR (hasRole('ROLE_DEV') AND #username == principal)")
     public Developer addNewProject(String username, Project newProject) {
@@ -157,7 +159,7 @@ public class DeveloperService {
         return this.developerRepository.saveAndFlush(developer);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
             "OR (hasRole('ROLE_DEV') AND #username == principal)")
     public Developer addNewSkills(String username, List<Skill> skills) {

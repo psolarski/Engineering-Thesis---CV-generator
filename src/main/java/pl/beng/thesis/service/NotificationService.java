@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.beng.thesis.model.Notification;
 
@@ -38,7 +39,7 @@ public class NotificationService {
      * @param id notification's id
      * @return notification with given id
      */
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Notification find(Long id) {
         return notificationRepository.findOne(id);
@@ -48,7 +49,7 @@ public class NotificationService {
      * Receive all notification from database
      * @return notification list
      */
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public List<Notification> findAll() {
         return notificationRepository.findAll();
@@ -59,7 +60,7 @@ public class NotificationService {
      * @param updatedNotification notification to update
      * @return updatedNotification
      */
-    @Transactional()
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
     public Notification update(Notification updatedNotification) {
         return notificationRepository.saveAndFlush(updatedNotification);
@@ -70,7 +71,7 @@ public class NotificationService {
      * @param newNotification new notification to persist
      * @return created notification
      */
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
     public Notification createNotification(Notification newNotification) {
         return notificationRepository.saveAndFlush(newNotification);
@@ -81,6 +82,7 @@ public class NotificationService {
      * for employee which haven't updated their skill, project
      * in past year.
      */
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @Scheduled(cron = "${cron.expression}")
     @DenyAll
     public void scheduledNotificationUpdate() {

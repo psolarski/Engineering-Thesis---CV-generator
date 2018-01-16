@@ -3,10 +3,12 @@ package pl.beng.thesis.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import pl.beng.thesis.model.Education;
 import pl.beng.thesis.repository.EducationRepository;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
@@ -19,25 +21,25 @@ public class EducationService {
         this.educationRepository = educationRepository;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_DEV')")
     public Education create(Education newEducation) {
         return educationRepository.saveAndFlush(newEducation);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Education find(Long id) {
         return educationRepository.findOne(id);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public List<Education> findAll() {
         return educationRepository.findAll();
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
             "OR (hasRole('ROLE_DEV') AND #updatedEducation.developer.username == principal)")
     public Education update(Education updatedEducation) {

@@ -3,10 +3,12 @@ package pl.beng.thesis.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import pl.beng.thesis.model.Project;
 import pl.beng.thesis.repository.ProjectRepository;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
@@ -19,25 +21,26 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Project find(Long id) {
         return projectRepository.findOne(id);
+
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = true)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public List<Project> findAll() {
         return projectRepository.findAll();
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_DEV', 'ROLE_ADMIN', 'ROLE_HR')")
     public Project create(Project newProject) {
         return projectRepository.saveAndFlush(newProject);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
             "OR (hasRole('ROLE_DEV') AND #updatedProject.developer.username == principal)")
     public Project update(Project updatedProject) {
