@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import pl.beng.thesis.model.DTO.EditEmployeeDTO;
 import pl.beng.thesis.model.DTO.NewPasswordDTO;
 import pl.beng.thesis.model.Employee;
 import pl.beng.thesis.service.EmployeeService;
@@ -80,10 +81,11 @@ public class EmployeeController {
          * @param updatedEmployee employee with new values
          * @return Employee with updated fields
          */
-    @RequestMapping(value = "/employee", method = RequestMethod.PUT)
-    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee updatedEmployee) {
+    @RequestMapping(value = "/employee/{username}", method = RequestMethod.PUT)
+    public ResponseEntity<Employee> updateEmployee(@PathVariable String username,
+                                                    @RequestBody EditEmployeeDTO updatedEmployee) {
 
-        return new ResponseEntity<>(employeeService.updateEmployee(updatedEmployee), HttpStatus.OK);
+        return new ResponseEntity<>(employeeService.updateEmployee(updatedEmployee, username), HttpStatus.OK);
     }
 
     /**

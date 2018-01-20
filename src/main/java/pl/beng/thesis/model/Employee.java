@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -55,6 +54,7 @@ public abstract class Employee implements UserDetails {
 
     @Basic(optional = false)
     @Column(nullable = false, unique = true)
+    @Size(min = 2, max = 50)
     private String username;
 
     @Basic(optional = false)

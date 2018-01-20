@@ -1,11 +1,14 @@
 package pl.beng.thesis.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
+import pl.beng.thesis.model.DTO.EditEmployeeDTO;
 import pl.beng.thesis.model.Employee;
 import pl.beng.thesis.repository.EmployeeRepository;
 
@@ -14,6 +17,8 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final EmployeeRepository employeeRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -45,15 +50,17 @@ public class EmployeeService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
-            "OR (hasRole('ROLE_DEV') AND #updatedEmployee.username == principal)")
-    public Employee updateEmployee(Employee updatedEmployee) {
+            "OR (hasRole('ROLE_DEV') AND #username == principal)")
+    public Employee updateEmployee(EditEmployeeDTO updatedEmployee, String username) {
 
-        Employee employee = employeeRepository.findOne(updatedEmployee.getId());
+        Employee employee = employeeRepository.findByUsername(username);
 
         employee.setAddress(updatedEmployee.getAddress());
         employee.setEmail(updatedEmployee.getEmail());
         employee.setName(updatedEmployee.getName());
         employee.setSurname(updatedEmployee.getSurname());
+        employee.setPhone(updatedEmployee.getPhone());
+        employee.setRoles(updatedEmployee.getRoles());
 
         return employeeRepository.saveAndFlush(employee);
     }
@@ -82,7 +89,8 @@ public class EmployeeService {
            throw new Exception("Passwords do not match!");
         }
         Employee employee = employeeRepository.findByUsername(username);
-        if(!employee.getPassword().equals(bCryptPasswordEncoder.encode(oldPassword))) {
+
+        if(!bCryptPasswordEncoder.matches(oldPassword, employee.getPassword())) {
             throw new Exception("Passwords do not match!");
         }
         employee.setPassword(bCryptPasswordEncoder.encode(newPassword));
