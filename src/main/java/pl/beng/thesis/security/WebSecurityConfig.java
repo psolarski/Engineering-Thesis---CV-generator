@@ -16,9 +16,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -61,11 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             /* Employee section */
             .antMatchers(HttpMethod.GET, "/employees").hasAnyRole("ADMIN", "DEV", "HR")
+            .antMatchers(HttpMethod.GET, "/employees/employee").permitAll()
             .antMatchers(HttpMethod.GET, "/employees/*").hasAnyRole("ADMIN", "DEV", "HR")
             .antMatchers(HttpMethod.PUT, "/employees/*").hasAnyRole("ADMIN", "HR", "DEV")
             .antMatchers(HttpMethod.PUT, "/employees/*/{username}/password").hasAnyRole("ADMIN", "HR", "DEV")
-            .antMatchers(HttpMethod.GET, "/employees/employee").permitAll()
             .antMatchers(HttpMethod.POST, "/employees/employee").hasAnyRole("ADMIN", "HR")
+            .antMatchers(HttpMethod.PUT, "/employees/employee/{username}/locked").hasAnyRole("ADMIN")
+            .antMatchers(HttpMethod.PUT, "/employees/employee/{username}/activated").hasAnyRole("ADMIN")
             .antMatchers(HttpMethod.POST, "/employees/employee/{username}").hasAnyRole("ADMIN", "HR", "DEV")
 
             /* Project section */
@@ -85,8 +84,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, "/outlook/mail").hasAnyRole("ADMIN", "DEV", "HR")
 
             /* Other */
-            .antMatchers(HttpMethod.POST, "/login").permitAll();
-//            .anyRequest().authenticated();
+            .antMatchers(HttpMethod.POST, "/login").permitAll()
+            .anyRequest().authenticated();
 
         http.cors().and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
@@ -131,7 +130,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedHeader("Access-Control-Allow-Methods");
         configuration.addAllowedHeader("Access-Control-Allow-Headers");
         configuration.addAllowedHeader("Access-Control-Max-Age");
-//        configuration.setAllowedOrigins(Collections.singletonList("https://microsoft.com"));
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }

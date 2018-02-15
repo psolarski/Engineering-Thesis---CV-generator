@@ -13,6 +13,8 @@ import pl.beng.thesis.model.Employee;
 import pl.beng.thesis.repository.EmployeeRepository;
 
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.OptimisticLockException;
 import java.util.List;
 
 @Service
@@ -51,10 +53,13 @@ public class EmployeeService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
     @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
             "OR (hasRole('ROLE_DEV') AND #username == principal)")
-    public Employee updateEmployee(EditEmployeeDTO updatedEmployee, String username) {
+    public Employee updateEmployee(EditEmployeeDTO updatedEmployee, String username, int ETag) {
 
         Employee employee = employeeRepository.findByUsername(username);
 
+        if(ETag != employee.getVersion()) {
+            throw new OptimisticLockException("Employees versions do not match!");
+        }
         employee.setAddress(updatedEmployee.getAddress());
         employee.setEmail(updatedEmployee.getEmail());
         employee.setName(updatedEmployee.getName());
@@ -83,17 +88,46 @@ public class EmployeeService {
     public Employee changePassword(String username,
                                    String newPassword,
                                    String oldPassword,
-                                   String newPasswordConfirmed) throws Exception {
+                                   String newPasswordConfirmed,
+                                   int ETag) throws Exception {
 
         if(!newPasswordConfirmed.equals(newPassword)) {
            throw new Exception("Passwords do not match!");
         }
         Employee employee = employeeRepository.findByUsername(username);
 
+        if(ETag != employee.getVersion()) {
+            throw new OptimisticLockException("Employees versions do not match!");
+        }
+
         if(!bCryptPasswordEncoder.matches(oldPassword, employee.getPassword())) {
             throw new Exception("Passwords do not match!");
         }
         employee.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        return employeeRepository.saveAndFlush(employee);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = false)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public Employee activate(String username, boolean active, int ETag) {
+
+        Employee employee = employeeRepository.findByUsername(username);
+        if(ETag != employee.getVersion()) {
+            throw new OptimisticLockException("Employees versions do not match!");
+        }
+        employee.setActive(active);
+        return employeeRepository.saveAndFlush(employee);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, readOnly = false)
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public Employee lock(String username, boolean locked, int ETag) {
+
+        Employee employee = employeeRepository.findByUsername(username);
+        if(ETag != employee.getVersion()) {
+            throw new OptimisticLockException("Employees versions do not match!");
+        }
+        employee.setLocked(locked);
         return employeeRepository.saveAndFlush(employee);
     }
 }

@@ -13,6 +13,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import org.thymeleaf.exceptions.TemplateEngineException;
 import pl.beng.thesis.exception.DocumentCreationException;
 
+import javax.persistence.OptimisticLockException;
+
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -22,8 +24,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity<Object> handleThymeleafAndDocumentException(RuntimeException ex, WebRequest request) {
 
         logger.error("Document Exception occurred: " + ex);
-        String bodyOfResponse = "Unable to create document!";
-        return handleExceptionInternal(ex, bodyOfResponse,
+        String error_message = "document_exception";
+        return handleExceptionInternal(ex, error_message,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
@@ -31,8 +33,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
 
         logger.error("Runtime Exception occurred: " + ex);
-        String bodyOfResponse = "Upsss, something went wrong!";
-        return handleExceptionInternal(ex, bodyOfResponse,
+        String error_message = "runtime_exception";
+        return handleExceptionInternal(ex, error_message,
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
@@ -40,8 +42,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
 
         logger.error("Access Denied Exception occurred: " + ex);
-        String bodyOfResponse = "Access is denied, you do not have permission!";
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+        String error_message = "access_denied";
+        return handleExceptionInternal(ex, error_message,
+                new HttpHeaders(), HttpStatus.FORBIDDEN, request);
+    }
+
+    @ExceptionHandler(value = { OptimisticLockException.class})
+    public ResponseEntity<Object> handleOptimisticLockException(OptimisticLockException ex, WebRequest request) {
+
+        logger.error("Optimistic Lock Exception occurred: " + ex);
+        String error_message = "optimistic_lock";
+        return handleExceptionInternal(ex, error_message,
+                new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 }

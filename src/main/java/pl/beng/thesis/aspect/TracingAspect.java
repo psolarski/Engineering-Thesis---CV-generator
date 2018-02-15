@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Aspect
 @Component
 public class TracingAspect {
@@ -18,9 +20,9 @@ public class TracingAspect {
     @Before("pl.beng.thesis.aspect.GeneratorPointcuts.anyControllerBean()")
     public void beforeAnyControllerMethod(JoinPoint joinPoint) {
         String className = joinPoint.getSignature().getDeclaringTypeName();
-        String methodName = joinPoint.getSignature().getName();
+        String methodName =  joinPoint.getSignature().getName();
 
-        logger.info(" ---> Method " + className + "." + methodName + " is about to be called");
+        logger.info(" Method " + className + "." + methodName + " is about to be called");
     }
 
     @AfterReturning("pl.beng.thesis.aspect.GeneratorPointcuts.anyControllerBean()")
@@ -28,7 +30,7 @@ public class TracingAspect {
         String className = joinPoint.getSignature().getDeclaringTypeName();
         String methodName = joinPoint.getSignature().getName();
 
-        logger.info(" ---> Method " + className + "." + methodName + " performed as expected");
+        logger.info(" Method " + className + "." + methodName + " performed as expected");
     }
 
     @AfterThrowing("pl.beng.thesis.aspect.GeneratorPointcuts.anyControllerBean()")
@@ -36,6 +38,6 @@ public class TracingAspect {
         String className = joinPoint.getSignature().getDeclaringTypeName();
         String methodName = joinPoint.getSignature().getName();
 
-        logger.info(" ---> Method " + className + "." + methodName + " thrown exception!");
+        logger.info(" Method " + className + "." + methodName + " thrown exception!");
     }
 }

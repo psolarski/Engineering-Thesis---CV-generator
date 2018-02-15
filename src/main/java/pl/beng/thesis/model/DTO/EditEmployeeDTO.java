@@ -14,7 +14,7 @@ public class EditEmployeeDTO {
     private int number;
     private Address address;
     private Set<Role> roles;
-
+    private int version;
 
     public String getName() {
         return name;
@@ -70,5 +70,13 @@ public class EditEmployeeDTO {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

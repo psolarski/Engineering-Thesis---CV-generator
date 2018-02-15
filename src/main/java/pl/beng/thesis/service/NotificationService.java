@@ -89,7 +89,7 @@ public class NotificationService {
         logger.info("START NOTIFICATION UPDATE!");
         developerService.findAll().forEach(developer -> {
             /* Check if last modification date is year before current date */
-            if(LocalDate.now().minusYears(1).isBefore(developer.getDataLastModificationDate())) {
+            if(LocalDate.now().minusYears(1).isBefore(developer.getLastModificationDate())) {
 
                 /* If last notification date was created in past 7 days don't do it again */
                 if(developer.getLastNotificationDate() == null ||

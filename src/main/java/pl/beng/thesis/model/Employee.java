@@ -80,6 +80,10 @@ public abstract class Employee implements UserDetails {
     @Column(nullable = false)
     private boolean active;
 
+    @Basic(optional = false)
+    @Column(nullable = false)
+    private boolean locked;
+
     @Version
     @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
     private long version = 0L;
@@ -99,7 +103,8 @@ public abstract class Employee implements UserDetails {
 
     public Employee() {
         this.creationDate = LocalDate.now();
-        this.active = true;
+        this.active = false;
+        this.locked = false;
     }
 
     public Employee(String name, String surname, String username,
@@ -143,7 +148,7 @@ public abstract class Employee implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return locked;
     }
 
     @Override
@@ -153,7 +158,7 @@ public abstract class Employee implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return active;
     }
 
     @Override
@@ -232,6 +237,18 @@ public abstract class Employee implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public long getVersion() {
+        return version;
     }
 
     @Override

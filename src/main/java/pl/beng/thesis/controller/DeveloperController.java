@@ -81,16 +81,6 @@ public class DeveloperController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        headers.add("Access-Control-Allow-Origin", "*");
-        headers.add("Access-Control-Allow-Methods", "GET, POST, PUT");
-        headers.add("Access-Control-Allow-Headers", "Content-Type");
-        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-        headers.add("Pragma", "no-cache");
-        headers.add("Content-Disposition", "inline; filename=cv.pdf");
-        headers.setContentLength(processedHtml.length);
-
-        logger.info("DOCUMENT LENGHT " + processedHtml.length);
-
         return new ResponseEntity<>(processedHtml, headers, HttpStatus.CREATED);
     }
 

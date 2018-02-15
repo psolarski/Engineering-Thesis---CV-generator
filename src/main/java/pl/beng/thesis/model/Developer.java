@@ -29,17 +29,17 @@ public class Developer extends Employee {
                      String phone) {
 
         super(name, surname, username, password, email, phone);
-        dataLastModificationDate = LocalDate.now();
+        lastModificationDate = LocalDate.now();
     }
 
     public Developer() {
-        dataLastModificationDate = LocalDate.now();
+        lastModificationDate = LocalDate.now();
     }
 
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private LocalDate dataLastModificationDate;
+    private LocalDate lastModificationDate;
 
     @Transient
     private LocalDate lastNotificationDate;
@@ -88,12 +88,12 @@ public class Developer extends Employee {
         this.projects = projects;
     }
 
-    public LocalDate getDataLastModificationDate() {
-        return dataLastModificationDate;
+    public LocalDate getLastModificationDate() {
+        return lastModificationDate;
     }
 
-    public void setDataLastModificationDate(LocalDate dataLastModificationDate) {
-        this.dataLastModificationDate = dataLastModificationDate;
+    public void setLastModificationDate(LocalDate lastModificationDate) {
+        this.lastModificationDate = lastModificationDate;
     }
 
     public LocalDate getLastNotificationDate() {

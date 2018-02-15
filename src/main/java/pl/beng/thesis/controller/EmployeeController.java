@@ -6,14 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pl.beng.thesis.model.DTO.EditEmployeeDTO;
 import pl.beng.thesis.model.DTO.NewPasswordDTO;
 import pl.beng.thesis.model.Employee;
 import pl.beng.thesis.service.EmployeeService;
 
-import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -37,6 +35,7 @@ public class EmployeeController {
 
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Employee loggedEmployee = employeeService.findByUsername(username);
+
         return new ResponseEntity<>(loggedEmployee, HttpStatus.OK);
     }
 
@@ -82,10 +81,11 @@ public class EmployeeController {
          * @return Employee with updated fields
          */
     @RequestMapping(value = "/employee/{username}", method = RequestMethod.PUT)
-    public ResponseEntity<Employee> updateEmployee(@PathVariable String username,
-                                                    @RequestBody EditEmployeeDTO updatedEmployee) {
+    public ResponseEntity<Employee> updateEmployee(@RequestHeader(value = "ETag") int ETag,
+                                                   @PathVariable String username,
+                                                   @RequestBody EditEmployeeDTO updatedEmployee) {
 
-        return new ResponseEntity<>(employeeService.updateEmployee(updatedEmployee, username), HttpStatus.OK);
+        return new ResponseEntity<>(employeeService.updateEmployee(updatedEmployee, username, ETag), HttpStatus.OK);
     }
 
     /**
@@ -102,14 +102,33 @@ public class EmployeeController {
 
 
     @RequestMapping(value = "/employee/{username}/password", method = RequestMethod.PUT)
-    public ResponseEntity<Employee> changePassword(@PathVariable("username") String username,
+    public ResponseEntity<Employee> changePassword(@RequestHeader(value = "ETag") int ETag,
+                                                   @PathVariable("username") String username,
                                                    @RequestBody NewPasswordDTO newPasswordDTO) throws Exception {
 
         return new ResponseEntity<>(employeeService.changePassword
                         (username,
                          newPasswordDTO.getNewPassword(),
                          newPasswordDTO.getOldPassword(),
-                         newPasswordDTO.getNewPasswordConfirmed()),
+                         newPasswordDTO.getNewPasswordConfirmed(),
+                         ETag),
             HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/employee/{username}/activated", method = RequestMethod.PUT)
+    public ResponseEntity<Employee> activeAccount(@RequestHeader(value = "ETag") int ETag,
+                                                  @PathVariable("username") String username,
+                                                  @RequestParam boolean active) {
+
+        return new ResponseEntity<>(employeeService.activate(username, active, ETag), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/employee/{username}/locked", method = RequestMethod.PUT)
+    public ResponseEntity<Employee> lockAccount(@RequestHeader(value = "ETag") int ETag,
+                                                @PathVariable("username") String username,
+                                                @RequestParam boolean locked) {
+
+        return new ResponseEntity<>(employeeService.lock(username, locked, ETag), HttpStatus.OK);
+    }
+
 }
