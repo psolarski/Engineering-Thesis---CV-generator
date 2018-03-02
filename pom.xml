@@ -5,11 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pl.beng.thesis</groupId>
-    <artifactId>ps</artifactId>
+    <artifactId>Solarski-Praca-Inzynierska</artifactId>
     <version>1.0</version>
 
     <name>CVGenerator</name>
-    <description></description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
