@@ -22,6 +22,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <apache.commons.version>3.0.1</apache.commons.version>
+        <!--Fix an issue with Coveralls (could not parse Build timestamp) which was fixed by adding to POM properties:-->
+        <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss</maven.build.timestamp.format>
     </properties>
 
     <dependencies>
@@ -146,6 +148,34 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
                 </configuration>
+            </plugin>
+            <!--Reporting with jacoco and coveralls-->
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>4.1.0</version>
+                <configuration>
+                    <timestampFormat>${maven.build.timestamp.format}</timestampFormat>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.7.201606060606</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
