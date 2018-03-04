@@ -1,7 +1,7 @@
 # CV Generator for IT Employees
 
 Current build status:    [![Build Status](https://travis-ci.org/psolarski/Engineering-Thesis---CV-generator.svg?branch=master)](https://travis-ci.org/psolarski/Engineering-Thesis---CV-generator)
-
+[![Coverage Status](https://coveralls.io/repos/github/psolarski/Engineering-Thesis---CV-generator/badge.svg?branch=master)](https://coveralls.io/github/psolarski/Engineering-Thesis---CV-generator?branch=master)
 # Motivation
 The system was created for the needs of my engineering thesis. 
 
