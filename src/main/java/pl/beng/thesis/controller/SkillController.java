@@ -65,6 +65,6 @@ public class SkillController {
     @RequestMapping(value = "/skill", method = RequestMethod.POST)
     public ResponseEntity<Skill> createSkill(@RequestBody Skill skill) {
 
-        return new ResponseEntity<>(skillService.create(skill), HttpStatus.OK);
+        return new ResponseEntity<>(skillService.create(skill), HttpStatus.CREATED);
     }
 }

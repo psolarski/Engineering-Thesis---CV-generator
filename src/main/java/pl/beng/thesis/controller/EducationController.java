@@ -65,6 +65,6 @@ public class EducationController {
     @RequestMapping(value = "/education", method = RequestMethod.POST)
     public ResponseEntity<Education> createEducation(@RequestBody Education education) {
 
-        return new ResponseEntity<>(educationService.create(education), HttpStatus.OK);
+        return new ResponseEntity<>(educationService.create(education), HttpStatus.CREATED);
     }
 }

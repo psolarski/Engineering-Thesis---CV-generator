@@ -64,7 +64,7 @@ public class DeveloperController {
     @RequestMapping(value = "/developer", method = RequestMethod.POST)
     public ResponseEntity<Developer> createDeveloper(@RequestBody Developer newDeveloper) {
 
-        return new ResponseEntity<>(developerService.createDeveloper(newDeveloper), HttpStatus.OK);
+        return new ResponseEntity<>(developerService.createDeveloper(newDeveloper), HttpStatus.CREATED);
     }
 
     /**

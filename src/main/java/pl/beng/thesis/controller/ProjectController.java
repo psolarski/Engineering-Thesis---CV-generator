@@ -65,6 +65,6 @@ public class ProjectController {
     @RequestMapping(value = "/Project", method = RequestMethod.POST)
     public ResponseEntity<Project> createProject(@RequestBody Project project) {
 
-        return new ResponseEntity<>(projectService.create(project), HttpStatus.OK);
+        return new ResponseEntity<>(projectService.create(project), HttpStatus.CREATED);
     }
 }
