@@ -1,5 +1,7 @@
 package pl.beng.thesis.model;
 
+import pl.beng.thesis.model.Enum.SkillLevelEnum;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -18,9 +20,8 @@ public class Skill implements Serializable {
     @Size(min = 3, max = 40)
     private String name;
 
-    @Column(nullable = false)
-    @Size(min = 3, max = 40)
-    private String level;
+    @Enumerated(EnumType.STRING)
+    private SkillLevelEnum level;
 
     @Version
     @Column(name = "version", columnDefinition = "integer DEFAULT 0", nullable = false)
@@ -33,7 +34,7 @@ public class Skill implements Serializable {
     public Skill() {
     }
 
-    public Skill(String name, String level) {
+    public Skill(String name, SkillLevelEnum level) {
         this.name = name;
         this.level = level;
     }
@@ -46,11 +47,11 @@ public class Skill implements Serializable {
         this.name = name;
     }
 
-    public String getLevel() {
+    public SkillLevelEnum getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(SkillLevelEnum level) {
         this.level = level;
     }
 
