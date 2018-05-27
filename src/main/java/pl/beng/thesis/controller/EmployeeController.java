@@ -1,5 +1,6 @@
 package pl.beng.thesis.controller;
 
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.beng.thesis.model.DTO.EditEmployeeDTO;
 import pl.beng.thesis.model.DTO.NewPasswordDTO;
 import pl.beng.thesis.model.Employee;
 import pl.beng.thesis.service.EmployeeService;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -131,4 +134,18 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.lock(username, locked, ETag), HttpStatus.OK);
     }
 
+
+    /**
+     * Handle employee photo upload
+     **/
+    @RequestMapping(value = "/employee/{username}/photography", method = RequestMethod.POST)
+    public ResponseEntity uploadEmployeePhotography(@PathVariable("username") String username,
+                                                    @RequestParam("photography") MultipartFile photography) throws IOException, FileUploadException {
+
+        if (photography.isEmpty()) {
+            throw new FileUploadException("File.Empty");
+        }
+        this.employeeService.uploadEmployeesPhotography(username, photography);
+        return ResponseEntity.ok("Successful upload");
+    }
 }

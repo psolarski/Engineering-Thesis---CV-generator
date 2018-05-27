@@ -3,11 +3,13 @@ package pl.beng.thesis.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
+import org.springframework.web.multipart.MultipartFile;
 import pl.beng.thesis.model.DTO.EditEmployeeDTO;
 import pl.beng.thesis.model.Employee;
 import pl.beng.thesis.repository.EmployeeRepository;
@@ -15,6 +17,12 @@ import pl.beng.thesis.repository.EmployeeRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.OptimisticLockException;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -24,6 +32,10 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Value("${file.upload.root.folder}")
+    private String directoryRoot;
+
 
     @Autowired
     public EmployeeService(EmployeeRepository employeeRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -129,5 +141,23 @@ public class EmployeeService {
         }
         employee.setLocked(locked);
         return employeeRepository.saveAndFlush(employee);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
+    "OR (hasRole('ROLE_DEV') AND #username == principal)")
+    public void uploadEmployeesPhotography(String username, MultipartFile photography) throws IOException {
+
+        Employee employee = this.employeeRepository.findByUsername(username);
+
+        // Get bytes from file
+        byte[] bytes = photography.getBytes();
+
+        //Prepare path
+        Path userFolder = Paths.get(directoryRoot + username + "/");
+        Path filePath = Paths.get(userFolder + "/ProfilePicture.jpg");
+        if(Files.notExists(userFolder)) {
+            Files.createDirectories(userFolder.getParent());
+        }
+        Files.write(filePath, bytes);
     }
 }
