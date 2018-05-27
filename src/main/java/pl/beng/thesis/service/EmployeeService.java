@@ -143,6 +143,12 @@ public class EmployeeService {
         return employeeRepository.saveAndFlush(employee);
     }
 
+    /**
+     * Receive profile profile picture for employee
+     * @param username given employee username
+     * @param photography employee profile picture
+     * @throws IOException in case when IO operation fails
+     */
     @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
     "OR (hasRole('ROLE_DEV') AND #username == principal)")
     public void uploadEmployeesPhotography(String username, MultipartFile photography) throws IOException {
@@ -159,5 +165,14 @@ public class EmployeeService {
             Files.createDirectories(userFolder.getParent());
         }
         Files.write(filePath, bytes);
+    }
+
+
+    @PreAuthorize("hasAnyRole('ROLE_HR', 'ROLE_ADMIN') " +
+            "OR (hasRole('ROLE_DEV') AND #username == principal)")
+    public byte[] getEmployeeProfilePicture(String username) throws IOException {
+
+        Path filePath = Paths.get(directoryRoot + username + "/ProfilePicture.jpg");
+        return Files.readAllBytes(filePath);
     }
 }
