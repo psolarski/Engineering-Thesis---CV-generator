@@ -2,6 +2,8 @@ package pl.beng.thesis.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +16,25 @@ import org.thymeleaf.exceptions.TemplateEngineException;
 import pl.beng.thesis.exception.DocumentCreationException;
 
 import javax.persistence.OptimisticLockException;
+import java.util.Locale;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private final ResourceBundleMessageSource resourceBundleMessageSource;
+
+    @Autowired
+    public RestResponseEntityExceptionHandler(ResourceBundleMessageSource resourceBundleMessageSource) {
+        this.resourceBundleMessageSource = resourceBundleMessageSource;
+    }
+
     @ExceptionHandler(value = { DocumentCreationException.class, TemplateEngineException.class })
     public ResponseEntity<Object> handleThymeleafAndDocumentException(RuntimeException ex, WebRequest request) {
 
         logger.error("Document Exception occurred: " + ex);
-        String error_message = "document_exception";
+        String error_message = resourceBundleMessageSource.getMessage("exception.document", null, new Locale("pl", "PL"));
         return handleExceptionInternal(ex, error_message,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
@@ -33,7 +43,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
 
         logger.error("Runtime Exception occurred: " + ex);
-        String error_message = "runtime_exception";
+        String error_message = resourceBundleMessageSource.getMessage("exception.runtime", null, new Locale("pl", "PL"));
         return handleExceptionInternal(ex, error_message,
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
@@ -42,7 +52,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
 
         logger.error("Access Denied Exception occurred: " + ex);
-        String error_message = "access_denied";
+        String error_message = resourceBundleMessageSource.getMessage("exception.access_denied", null, new Locale("pl", "PL"));
         return handleExceptionInternal(ex, error_message,
                 new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
@@ -51,7 +61,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity<Object> handleOptimisticLockException(OptimisticLockException ex, WebRequest request) {
 
         logger.error("Optimistic Lock Exception occurred: " + ex);
-        String error_message = "optimistic_lock";
+        String error_message = resourceBundleMessageSource.getMessage("exception.optimistic_lock", null, new Locale("pl", "PL"));
         return handleExceptionInternal(ex, error_message,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
