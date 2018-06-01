@@ -152,9 +152,14 @@ public class EmployeeController {
     }
 
 
+    /**
+     * Get employees profile picture
+     * @param username given employee username
+     * @return employee profile picture
+     * @throws IOException in case when IO operation fails
+     */
     @RequestMapping(value = "/employee/{username}/photography", method = RequestMethod.GET)
     public ResponseEntity<byte[]> getEmployeeProfilePicture(@PathVariable("username") String username) throws IOException {
-
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);

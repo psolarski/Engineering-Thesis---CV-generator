@@ -31,37 +31,41 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(value = { DocumentCreationException.class, TemplateEngineException.class })
-    public ResponseEntity<Object> handleThymeleafAndDocumentException(RuntimeException ex, WebRequest request) {
+    public ResponseEntity<Object> handleThymeleafAndDocumentException(RuntimeException ex, WebRequest request,
+                                                                      Locale locale) {
 
         logger.error("Document Exception occurred: " + ex);
-        String error_message = resourceBundleMessageSource.getMessage("exception.document", null, new Locale("pl", "PL"));
+        String error_message = resourceBundleMessageSource.getMessage("exception.document", null, locale);
         return handleExceptionInternal(ex, error_message,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
     @ExceptionHandler(value = { RuntimeException.class})
-    public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request) {
+    public ResponseEntity<Object> handleRuntimeException(RuntimeException ex, WebRequest request,
+                                                         Locale locale) {
 
         logger.error("Runtime Exception occurred: " + ex);
-        String error_message = resourceBundleMessageSource.getMessage("exception.runtime", null, new Locale("pl", "PL"));
+        String error_message = resourceBundleMessageSource.getMessage("exception.runtime", null, locale);
         return handleExceptionInternal(ex, error_message,
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler(value = { AccessDeniedException.class})
-    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request,
+                                                              Locale locale) {
 
         logger.error("Access Denied Exception occurred: " + ex);
-        String error_message = resourceBundleMessageSource.getMessage("exception.access_denied", null, new Locale("pl", "PL"));
+        String error_message = resourceBundleMessageSource.getMessage("exception.access_denied", null, locale);
         return handleExceptionInternal(ex, error_message,
                 new HttpHeaders(), HttpStatus.FORBIDDEN, request);
     }
 
     @ExceptionHandler(value = { OptimisticLockException.class})
-    public ResponseEntity<Object> handleOptimisticLockException(OptimisticLockException ex, WebRequest request) {
+    public ResponseEntity<Object> handleOptimisticLockException(OptimisticLockException ex, WebRequest request,
+                                                                Locale locale) {
 
         logger.error("Optimistic Lock Exception occurred: " + ex);
-        String error_message = resourceBundleMessageSource.getMessage("exception.optimistic_lock", null, new Locale("pl", "PL"));
+        String error_message = resourceBundleMessageSource.getMessage("exception.optimistic_lock", null, locale);
         return handleExceptionInternal(ex, error_message,
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
